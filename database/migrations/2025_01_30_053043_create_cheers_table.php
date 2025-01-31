@@ -15,13 +15,15 @@ return new class extends Migration
             $table->id();
             $table->string("first_name");
             $table->string("last_name");
-            $table->string("positon");
+            $table->string("position");
             $table->string("age");
             $table->string("dob");
             $table->string("height");
             $table->string("weight");
             $table->string("nationality");
             $table->string("passport");
+            $table->string("hightlight");
+            $table->string("image");
             $table->foreignId("user_id")
                 ->constrained()
                 ->cascadeOnUpdate()
