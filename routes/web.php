@@ -1,16 +1,15 @@
 <?php
 
-use App\Http\Controllers\TopController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', [PlayerController::class, "index"])
+Route::get('/index', [PlayerController::class, "index"])
     ->name("root");
 
-Route::get('/dashboard', function () {
+Route::get('/', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 

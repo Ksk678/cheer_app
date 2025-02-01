@@ -110,7 +110,7 @@
 
                     <!-- Authentication -->
                     <x-responsive-nav-link :href="route('players.create')">
-                        {{ __('Create Post') }}
+                        {{ __("Create Player's Profile") }}
                     </x-responsive-nav-link>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
