@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\TopController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\CheerController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+
 
 Route::get('/', [CheerController::class, "index"])
     ->name("root");
@@ -29,7 +31,10 @@ Route::resource('cheers', CheerController::class)
 Route::resource('cheers', CheerController::class)
     ->only(['show', 'index']);
 
-Route::resource('cheers/top', TopController::class)
-    ->only(['cheers', 'top']);
+// Route::resource('cheers/top', TopController::class)
+//     ->only(['cheers', 'top']);
+
+Route::get('/search', [SearchController::class, 'index'])->name('search.index');
+Route::get('/search/results', [SearchController::class, 'search'])->name('search.results');
 
 require __DIR__ . '/auth.php';
