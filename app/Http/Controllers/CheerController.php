@@ -36,8 +36,11 @@ class CheerController extends Controller
         $cheer = new Cheer($request->all());
         $cheer->user_id = $request->user()->id;
 
-        $file = $request->file("image");
-        $cheer->image = self::createFileName($file);
+        $imageFile = $request->file("image");
+        $cheer->image = self::createFileName($imageFile);
+
+        $highlightFile = $request->file("highlight");
+        $cheer->image = self::createFileName($highlightFile);
 
         // トランザクション開始
         DB::beginTransaction();
@@ -46,9 +49,13 @@ class CheerController extends Controller
             $cheer->save();
 
             // 画像アップロード
-            if (!Storage::putFileAs('/images/cheeers', $file, $cheer->image)) {
+            if (!Storage::putFileAs('/images/cheeers', $imageFile, $cheer->image)) {
                 // 例外を投げてロールバックさせる
                 throw new \Exception('画像ファイルの保存に失敗しました。');
+            }
+
+            if (!Storage::putFileAs('public/videos/cheers', $highlightFile, $cheer->highlight)) {
+                throw new \Exception('動画ファイルの保存に失敗しました。');
             }
 
             // トランザクション終了(成功)
