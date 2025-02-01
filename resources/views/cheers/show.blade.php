@@ -29,8 +29,8 @@
 
                     <p class="text-sm mb-2 md:text-base font-normal text-gray-600">
                         <span
-                            class="text-red-400 font-bold">{{ date('Y-m-d H:i:s', strtotime('-1 day')) < $cheer->created_at ? 'NEW' : '' }}</span>
-                        {{ $cheer->created_at }}
+                            class="text-red-400 font-bold">{{ date('Y-m-d', strtotime('-1 day')) < $cheer->created_at ? 'NEW' : '' }}</span>
+                        {{ $cheer->created_at->format('Y-m-d') }}
                     </p>
 
             </div>

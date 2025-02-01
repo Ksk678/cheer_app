@@ -15,7 +15,7 @@ class CheerController extends Controller
      */
     public function index()
     {
-        $cheers = Cheer::latest()->paginate(4);
+        $cheers = Cheer::latest()->paginate(12);
 
         return view("cheers.index", compact("cheers"));
     }

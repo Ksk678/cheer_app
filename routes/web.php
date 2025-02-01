@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TopController;
 use App\Http\Controllers\CheerController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -27,5 +28,8 @@ Route::resource('cheers', CheerController::class)
 
 Route::resource('cheers', CheerController::class)
     ->only(['show', 'index']);
+
+Route::resource('cheers/top', TopController::class)
+    ->only(['cheers', 'top']);
 
 require __DIR__ . '/auth.php';
