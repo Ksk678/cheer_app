@@ -9,32 +9,44 @@
 
         <x-validation-errors :errors="$errors" />
 
-        <article class="mb-2">
-            <h2 class="font-bold font-sans break-normal text-gray-900 pt-6 pb-1 text-3xl md:text-4xl break-words">
-                {{ $cheer->first_name }} {{ $cheer->last_name }}</h2>
-            <h3>Position: {{ $cheer->position }}</h3>
-            <h3>Age: {{ $cheer->age }} / DoB: {{ $cheer->dob }}</h3>
-            <h3>Height: {{ $cheer->height }}cm</h3>
-            <h3>Weight: {{ $cheer->weight }}kg</h3>
-            <h3>Nationality: {{ $cheer->nationality }}</h3>
-            <h3>Passport: {{ $cheer->passport }}</h3>
+        <div class="flex flex-row gap-4">
+            <div class="w-1/2 flex justify-center items-center">
+                <img class="h-64  mb-2 object-cover" src="{{ Storage::url('images/cheers/' . $cheer->image) }}"
+                    alt="" class="mb-4">
+            </div>
 
+            <div class="w-1/2">
+                <article class="mb-2">
+                    <h2
+                        class="font-bold font-sans break-normal text-gray-900 pt-6 pb-1 text-3xl md:text-4xl break-words">
+                        {{ $cheer->first_name }} {{ $cheer->last_name }}</h2>
+                    <h3>Position: {{ $cheer->position }}</h3>
+                    <h3>Age: {{ $cheer->age }} / DoB: {{ $cheer->dob }}</h3>
+                    <h3>Height: {{ $cheer->height }}cm</h3>
+                    <h3>Weight: {{ $cheer->weight }}kg</h3>
+                    <h3>Nationality: {{ $cheer->nationality }}</h3>
+                    <h3>Passport: {{ $cheer->passport }}</h3>
 
-            <p class="text-sm mb-2 md:text-base font-normal text-gray-600">
-                <span
-                    class="text-red-400 font-bold">{{ date('Y-m-d H:i:s', strtotime('-1 day')) < $cheer->created_at ? 'NEW' : '' }}</span>
-                {{ $cheer->created_at }}
-            </p>
+                    <p class="text-sm mb-2 md:text-base font-normal text-gray-600">
+                        <span
+                            class="text-red-400 font-bold">{{ date('Y-m-d H:i:s', strtotime('-1 day')) < $cheer->created_at ? 'NEW' : '' }}</span>
+                        {{ $cheer->created_at }}
+                    </p>
 
-            <video class="w-30 h-30 mb-2 object-cover" controls>
+            </div>
+        </div>
+
+        <div class="flex justify-center items-center">
+            <video class="w-xl mb-2 object-cover" controls>
                 {{-- <source src="{{ Storage::url('videos/cheers/' . $cheer->video) }}" type="video/mp4" alt="" class="mb-4"> --}}
-                <source src="{{ Storage::url('videos/cheers/' . $cheer->highlight) }}" type="video/mp4" alt="" class="mb-4">
+                <source src="{{ Storage::url('videos/cheers/' . $cheer->highlight) }}" type="video/mp4" alt=""
+                    class="mb-4">
                 Your browser does not support the video tag.
             </video>
+        </div>
 
-            <img class="w-30 h-30 mb-2 object-cover" src="{{ Storage::url('images/cheers/' . $cheer->image) }}" alt="" class="mb-4">
 
-            <p class="text-gray-700 text-base break-all">{!! nl2br(e($cheer->body)) !!}</p>
+        <p class="text-gray-700 text-base break-all">{!! nl2br(e($cheer->body)) !!}</p>
         </article>
         <div class="flex flex-row text-center my-4">
             @can('update', $cheer)
