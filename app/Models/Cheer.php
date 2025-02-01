@@ -26,7 +26,7 @@ class Cheer extends Model
     }
 
     public function  getImageUrlAttribut()
-    {
+    
         return Storage::url("images/cheers/" . $this->image);
     }
 }
