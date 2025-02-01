@@ -40,7 +40,7 @@ class CheerController extends Controller
         $cheer->image = self::createFileName($imageFile);
 
         $highlightFile = $request->file("highlight");
-        $cheer->image = self::createFileName($highlightFile);
+        $cheer->highlight = self::createFileName($highlightFile);
 
         // トランザクション開始
         DB::beginTransaction();
@@ -49,12 +49,12 @@ class CheerController extends Controller
             $cheer->save();
 
             // 画像アップロード
-            if (!Storage::putFileAs('/images/cheeers', $imageFile, $cheer->image)) {
+            if (!Storage::putFileAs('/images/cheers', $imageFile, $cheer->image)) {
                 // 例外を投げてロールバックさせる
                 throw new \Exception('画像ファイルの保存に失敗しました。');
             }
 
-            if (!Storage::putFileAs('public/videos/cheers', $highlightFile, $cheer->highlight)) {
+            if (!Storage::putFileAs('/videos/cheers', $highlightFile, $cheer->highlight)) {
                 throw new \Exception('動画ファイルの保存に失敗しました。');
             }
 
@@ -103,45 +103,53 @@ class CheerController extends Controller
                 ->withErrors('自分の記事以外は更新できません');
         }
 
-        $file = $request->file('image');
-        if ($file) {
-            $delete_file_path = 'images/cheers/' . $cheer->image;
-            $cheer->image = self::createFileName($file);
+        $imageFile = $request->file('image');
+        if ($imageFile) {
+            $delete_image_path = 'images/cheers/' . $cheer->image;
+            $cheer->image = self::createFileName($imageFile);
         }
+
+        $highlightFile = $request->file('highlight');
+        if ($highlightFile) {
+            $delete_highlight_path = 'videos/cheers/' . $cheer->highlight;
+            $cheer->highlight = self::createFileName($highlightFile);
+        }
+
+
         $cheer->fill($request->all());
 
-        // トランザクション開始
         DB::beginTransaction();
         try {
-            // 更新
             $cheer->save();
 
-            if ($file) {
-                // 画像アップロード
-                if (!Storage::putFileAs('images/cheers', $file, $cheer->image)) {
-                    // 例外を投げてロールバックさせる
+            if ($imageFile) {
+                if (!Storage::putFileAs('images/cheers', $imageFile, $cheer->image)) {
                     throw new \Exception('画像ファイルの保存に失敗しました。');
                 }
-
-                // 画像削除
-                if (!Storage::delete($delete_file_path)) {
-                    //アップロードした画像を削除する
+                if (!Storage::delete($delete_image_path)) {
                     Storage::delete('images/cheers/' . $cheer->image);
-                    //例外を投げてロールバックさせる
                     throw new \Exception('画像ファイルの削除に失敗しました。');
                 }
             }
 
-            // トランザクション終了(成功)
+            if ($highlightFile) {
+                if (!Storage::putFileAs('videos/cheers/', $highlightFile, $cheer->highlight)) {
+                    throw new \Exception('動画ファイルの保存に失敗しました。');
+                }
+                if (!Storage::delete($delete_highlight_path)) {
+                    Storage::delete('videos/cheers/' . $cheer->highlight);
+                    throw new \Exception('動画ファイルの削除に失敗しました。');
+                }
+            }
+
             DB::commit();
         } catch (\Exception $e) {
-            // トランザクション終了(失敗)
             DB::rollback();
             return back()->withInput()->withErrors($e->getMessage());
         }
 
         return redirect()->route('cheers.show', $cheer)
-            ->with('notice', '記事を更新しました');
+            ->with('notice', 'Your profile has been updated');
     }
 
     /**
@@ -149,7 +157,24 @@ class CheerController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $cheer = Cheer::find($id);
+
+        DB::beginTransaction();
+        try {
+            $cheer->delete();
+
+            if (!Storage::delete('images/cheers/' . $cheer->image)) {
+                throw new \Exception('画像ファイルの削除に失敗しました。');
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return back()->withErrors($e->getMessage());
+        }
+
+        return redirect()->route('cheers.index')
+            ->with('notice', 'Your profile has deleted');
     }
 
 

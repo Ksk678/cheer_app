@@ -14,10 +14,10 @@
                 {{ $cheer->first_name }} {{ $cheer->last_name }}</h2>
             <h3>Position: {{ $cheer->position }}</h3>
             <h3>Age: {{ $cheer->age }} / DoB: {{ $cheer->dob }}</h3>
-            <h3>Height:  {{ $cheer->height }}cm</h3>
-            <h3>Weight:  {{ $cheer->weight }}kg</h3>
+            <h3>Height: {{ $cheer->height }}cm</h3>
+            <h3>Weight: {{ $cheer->weight }}kg</h3>
             <h3>Nationality: {{ $cheer->nationality }}</h3>
-            <h3>Passport:  {{ $cheer->passport }}</h3>
+            <h3>Passport: {{ $cheer->passport }}</h3>
 
 
             <p class="text-sm mb-2 md:text-base font-normal text-gray-600">
@@ -25,7 +25,15 @@
                     class="text-red-400 font-bold">{{ date('Y-m-d H:i:s', strtotime('-1 day')) < $cheer->created_at ? 'NEW' : '' }}</span>
                 {{ $cheer->created_at }}
             </p>
-            <img src="{{ $cheer->image_url }}" alt="" class="mb-4">
+
+            <video class="w-30 h-30 mb-2 object-cover" controls>
+                {{-- <source src="{{ Storage::url('videos/cheers/' . $cheer->video) }}" type="video/mp4" alt="" class="mb-4"> --}}
+                <source src="{{ Storage::url('videos/cheers/' . $cheer->highlight) }}" type="video/mp4" alt="" class="mb-4">
+                Your browser does not support the video tag.
+            </video>
+
+            <img class="w-30 h-30 mb-2 object-cover" src="{{ Storage::url('images/cheers/' . $cheer->image) }}" alt="" class="mb-4">
+
             <p class="text-gray-700 text-base break-all">{!! nl2br(e($cheer->body)) !!}</p>
         </article>
         <div class="flex flex-row text-center my-4">

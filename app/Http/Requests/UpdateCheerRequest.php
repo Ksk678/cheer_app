@@ -11,7 +11,7 @@ class UpdateCheerRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class UpdateCheerRequest extends FormRequest
      */
     public function rules(): array
     {
-        $rule = [
+        $rules = [
             // "first_name" = "required|string|max:20",
             // "last_name" = "required|string|max:20",
             // "position" = "required|string|max:20",
@@ -31,12 +31,18 @@ class UpdateCheerRequest extends FormRequest
             // "weight" = "required|string|max:20",
             // "nationality" = "required|string|max:20",
             // "passport" = "required|string|max:20",
+            // "highlight" = "required|string|max:20",
+            // "image" = "required|string|max:20",
         ];
 
-        if ($this->file("image")) {
-            $rule["image"] = "required|file|image|mimes:jpg,png";
+        if ($this->hasFile('image')) {
+            $rules['image'] = 'nullable|file|image|';
         }
 
-        return $rule;
+        if ($this->hasFile('highlight')) {
+            $rules['highlight'] = 'nullable|file|mimes:mp4,mov,avi';
+        }
+
+        return $rules;
     }
 }
