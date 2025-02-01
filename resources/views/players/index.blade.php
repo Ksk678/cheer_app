@@ -2,27 +2,20 @@
     <div class="container max-w-7xl mx-auto px-4 md:px-12 pb-3 mt-3">
         <div class="flex flex-wrap -mx-1 lg:-mx-4 mb-4">
             @foreach ($players as $player)
-                {{-- <article class="w-48 px-4 md:w-1/2 text-4l text-gray-800 leading-normal"> --}}
-                <article class="w-1/4 px-4 mb-4">
-                    <a href="{{ route('players.show', $player) }}">
-                        <div class="flex justify-center item-center mb-2">
-                            <img class="h-40 mb-2 object-cover"
-                                src="{{ Storage::url('images/players/' . $player->image) }}" alt="">
+                <article class="w-1/4 px-4 mb-4 flex flex-col items-start">
+                    <a href="{{ route('players.show', $player) }}" class="w-full">
+                        <div class="flex justify-center items-center mb-2">
+                            <img class="h-40 mb-2 object-cover" src="{{ Storage::url('images/players/' . $player->image) }}" alt="">
                         </div>
 
-                        <h4 class="text-lg md-2 font-bold break-words"> {{ $player->first_name }}
-                            {{ $player->last_name }}
-                        </h4>
-                        <p class="text-sm break-words">{{ $player->position }}</p>
-                        <p class="text-sm break-words">Age: {{ $player->age }}</p>
-                        {{-- class="font-bold font-sans break-normal text-gray-900 pt-6 pb-1 text-3xl md:text-4xl break-words" --}}
+                        <h4 class="text-lg md-2 font-bold break-words text-left w-full"> {{ $player->first_name }} {{ $player->last_name }}</h4>
+                        <p class="text-sm break-words text-left w-full">{{ $player->position }}</p>
+                        <p class="text-sm break-words text-left w-full">Age: {{ $player->age }}</p>
 
-                        <p class="text-sm mb-2 md:text-base font-normal text-gray-600 break-words">
-                            <span
-                                class="text-red-400 font-bold">{{ date('Y-m-d', strtotime('-1 day')) < $player->created_at ? 'NEW' : '' }}</span>
+                        <p class="text-sm mb-2 md:text-base font-normal text-gray-600 break-words text-left w-full">
+                            <span class="text-red-400 font-bold">{{ date('Y-m-d', strtotime('-1 day')) < $player->created_at ? 'NEW' : '' }}</span>
                             {{ $player->created_at->format('Y-m-d') }}
                         </p>
-                        {{-- <p class="text-gray-700 text-base">{{ Str::limit($player->passport, 50) }}</p> --}}
                     </a>
                 </article>
             @endforeach

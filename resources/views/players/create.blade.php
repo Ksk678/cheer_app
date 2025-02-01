@@ -9,44 +9,32 @@
             @csrf
 
             <div class="mb-4">
-                <label class="block text-gray-700 text-sm mb-2" for="first_name">
-                    First Name
-                </label>
+                <label class="block text-gray-700 text-sm mb-2" for="first_name">First Name</label>
                 <input type="text" name="first_name"
                     class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full py-2 px-3"
                     required placeholder="First Name" value="{{ old('first_name') }}">
 
-                <label class="block text-gray-700 text-sm mb-2" for="last_name">
-                    Last Name
-                </label>
+                <label class="block text-gray-700 text-sm mb-2" for="last_name">Last Name</label>
                 <input type="text" name="last_name"
                     class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full py-2 px-3"
                     required placeholder="Last Name" value="{{ old('last_name') }}">
 
-                <label class="block text-gray-700 text-sm mb-2" for="position">
-                    Position
-                </label>
+                <label class="block text-gray-700 text-sm mb-2" for="position">Position</label>
                 <input type="text" name="position"
                     class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full py-2 px-3"
                     required placeholder="Position" value="{{ old('position') }}">
 
-                <label class="block text-gray-700 text-sm mb-2" for="age">
-                    Age
-                </label>
-                <input type="text" name="age"
+                <label class="block text-gray-700 text-sm mb-2" for="dob">DoB</label>
+                <input type="date" name="dob" id="dob"
                     class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full py-2 px-3"
-                    required placeholder="Age" value="{{ old('age') }}">
+                    required value="{{ old('dob') }}">
 
-                <label class="block text-gray-700 text-sm mb-2" for="dob">
-                    DoB
-                </label>
-                <input type="date" name="dob"
+                <label class="block text-gray-700 text-sm mb-2" for="age">Age</label>
+                <input type="text" name="age" id="age"
                     class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full py-2 px-3"
-                    required placeholder="DoB" value="{{ old('dob') }}">
+                    readonly placeholder="Age">
 
-                <label class="block text-gray-700 text-sm mb-2" for="height">
-                    Height
-                </label>
+                <label class="block text-gray-700 text-sm mb-2" for="height">Height</label>
                 <input type="text" name="height"
                     class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full py-2 px-3"
                     required placeholder="Height" value="{{ old('height') }}">
@@ -74,26 +62,13 @@
 
             </div>
 
-            {{-- <div class="mb-4">
-                <label class="block text-gray-700 text-sm mb-2" for="last_name">
-                    Last Name
-                </label>
-                <textarea name="last_name" rows="10"
-                    class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full py-2 px-3"
-                    required>{{ old('last_name') }}</textarea>
-            </div> --}}
-
             <div class="mb-4">
-                <label class="block text-gray-700 text-sm mb-2" for="highlight">
-                    Highlight
-                </label>
+                <label class="block text-gray-700 text-sm mb-2" for="highlight">Highlight</label>
                 <input type="file" name="highlight" class="border-gray-300">
             </div>
 
             <div class="mb-4">
-                <label class="block text-gray-700 text-sm mb-2" for="image">
-                    Image
-                </label>
+                <label class="block text-gray-700 text-sm mb-2" for="image">Image</label>
                 <input type="file" name="image" class="border-gray-300">
             </div>
 
@@ -101,4 +76,18 @@
                 class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
         </form>
     </div>
+
+    <script>
+        document.getElementById('dob').addEventListener('input', function() {
+            const dob = new Date(this.value);
+            const today = new Date();
+            let age = today.getFullYear() - dob.getFullYear();
+            const m = today.getMonth() - dob.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+                age--;
+            }
+            document.getElementById('age').value = age;
+        });
+    </script>
+
 </x-app-layout>

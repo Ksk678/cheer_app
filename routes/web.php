@@ -35,6 +35,5 @@ Route::resource('players', PlayerController::class)
 //     ->only(['players', 'top']);
 
 Route::get('/search', [SearchController::class, 'index'])->name('search.index');
-Route::get('/search/results', [SearchController::class, 'search'])->name('search.results');
 
 require __DIR__ . '/auth.php';

@@ -1,0 +1,29 @@
+@charset "utf-8";
+
+form div {
+    margin-bottom: 1rem;
+}
+
+form label {
+    display: inline-block;
+    width: 100px;
+    /* ラベルの幅を統一 */
+}
+
+form input {
+    width: 150px;
+    height: 28px;
+    /* 入力ボックスの幅を統一 */
+}
+
+.age-fields {
+    display: flex;
+    align-items: center;
+}
+
+.age-fields label,
+.age-fields input {
+    margin-right: 10px;
+    width: 60px;
+    /* 年齢フィールドの幅を自動調整 */
+}
