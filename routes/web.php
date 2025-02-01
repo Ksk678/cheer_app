@@ -2,12 +2,12 @@
 
 use App\Http\Controllers\TopController;
 use App\Http\Controllers\SearchController;
-use App\Http\Controllers\CheerController;
+use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', [CheerController::class, "index"])
+Route::get('/', [PlayerController::class, "index"])
     ->name("root");
 
 Route::get('/dashboard', function () {
@@ -20,19 +20,19 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('cheers', CheerController::class)
+Route::resource('players', PlayerController::class)
     ->only(['create', 'store', 'edit', 'update', 'destroy'])
     ->middleware('auth');
 
-Route::resource('cheers', CheerController::class)
+Route::resource('players', PlayerController::class)
     ->only(['create', 'store', 'edit', 'update', 'destroy'])
     ->middleware('auth');
 
-Route::resource('cheers', CheerController::class)
+Route::resource('players', PlayerController::class)
     ->only(['show', 'index']);
 
-// Route::resource('cheers/top', TopController::class)
-//     ->only(['cheers', 'top']);
+// Route::resource('players/top', TopController::class)
+//     ->only(['players', 'top']);
 
 Route::get('/search', [SearchController::class, 'index'])->name('search.index');
 Route::get('/search/results', [SearchController::class, 'search'])->name('search.results');

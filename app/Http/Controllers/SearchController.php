@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cheer;
+use App\Models\Player;
 use Illuminate\Http\Request;
 
-class SeachController extends Controller
+class SearchController extends Controller
 {
     public function index()
     {
@@ -15,7 +15,7 @@ class SeachController extends Controller
     public function search(Request $request)
     {
         $keyword = $request->input("keyword");
-        $items = Item::where("name", "like", "%{keyword}%")
+        $items = Player::where("name", "like", "%{keyword}%")
             ->get();
 
         return view("serch.results", compact("items"));

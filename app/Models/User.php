@@ -48,6 +48,6 @@ class User extends Authenticatable
 
     public function posts()
     {
-        return $this->hasMany(Cheer::class);
+        return $this->hasMany(Player::class);
     }
 }

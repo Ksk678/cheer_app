@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Cheer;
+use App\Models\Player;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class CheerPolicy
+class PlayerPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,7 +19,7 @@ class CheerPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Cheer $cheer): bool
+    public function view(User $user, Player $player): bool
     {
         return false;
     }
@@ -35,23 +35,23 @@ class CheerPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Cheer $cheer): bool
+    public function update(User $user, Player $player): bool
     {
-        return $user->id === $cheer->user_id;
+        return $user->id === $player->user_id;
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Cheer $cheer): bool
+    public function delete(User $user, Player $player): bool
     {
-        return  $user->id === $cheer->user_id;
+        return  $user->id === $player->user_id;
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Cheer $cheer): bool
+    public function restore(User $user, Player $player): bool
     {
         return false;
     }
@@ -59,7 +59,7 @@ class CheerPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Cheer $cheer): bool
+    public function forceDelete(User $user, Player $player): bool
     {
         return false;
     }

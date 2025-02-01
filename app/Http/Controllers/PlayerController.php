@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCheerRequest;
-use App\Http\Requests\UpdateCheerRequest;
-use App\Models\Cheer;
+use App\Http\Requests\StorePlayerRequest;
+use App\Http\Requests\UpdatePlayerRequest;
+use App\Models\Player;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-class CheerController extends Controller
+class PlayerController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $cheers = Cheer::latest()->paginate(12);
+        $players = Player::latest()->paginate(12);
 
-        return view("cheers.index", compact("cheers"));
+        return view("players.index", compact("players"));
     }
 
     /**
@@ -25,36 +25,36 @@ class CheerController extends Controller
      */
     public function create()
     {
-        return view("cheers.create");
+        return view("players.create");
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCheerRequest $request)
+    public function store(StorePlayerRequest $request)
     {
-        $cheer = new Cheer($request->all());
-        $cheer->user_id = $request->user()->id;
+        $player = new Player($request->all());
+        $player->user_id = $request->user()->id;
 
         $imageFile = $request->file("image");
-        $cheer->image = self::createFileName($imageFile);
+        $player->image = self::createFileName($imageFile);
 
         $highlightFile = $request->file("highlight");
-        $cheer->highlight = self::createFileName($highlightFile);
+        $player->highlight = self::createFileName($highlightFile);
 
         // トランザクション開始
         DB::beginTransaction();
         try {
             // 登録
-            $cheer->save();
+            $player->save();
 
             // 画像アップロード
-            if (!Storage::putFileAs('/images/cheers', $imageFile, $cheer->image)) {
+            if (!Storage::putFileAs('/images/players', $imageFile, $player->image)) {
                 // 例外を投げてロールバックさせる
                 throw new \Exception('画像ファイルの保存に失敗しました。');
             }
 
-            if (!Storage::putFileAs('/videos/cheers', $highlightFile, $cheer->highlight)) {
+            if (!Storage::putFileAs('/videos/players', $highlightFile, $player->highlight)) {
                 throw new \Exception('動画ファイルの保存に失敗しました。');
             }
 
@@ -67,7 +67,7 @@ class CheerController extends Controller
         }
 
         return redirect()
-            ->route('cheers.show', $cheer)
+            ->route('players.show', $player)
             ->with('notice', '記事を登録しました');
     }
 
@@ -76,9 +76,9 @@ class CheerController extends Controller
      */
     public function show(string $id)
     {
-        $cheer = Cheer::find($id);
+        $player = Player::find($id);
 
-        return view("cheers.show", compact("cheer"));
+        return view("players.show", compact("player"));
     }
 
     /**
@@ -86,58 +86,58 @@ class CheerController extends Controller
      */
     public function edit(string $id)
     {
-        $cheer = Cheer::find($id);
+        $player = Player::find($id);
 
-        return view("cheers.edit", compact("cheer"));
+        return view("players.edit", compact("player"));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCheerRequest $request, string $id)
+    public function update(UpdatePlayerRequest $request, string $id)
     {
-        $cheer = Cheer::find($id);
+        $player = Player::find($id);
 
-        if ($request->user()->cannot('update', $cheer)) {
-            return redirect()->route('cheers.show', $cheer)
+        if ($request->user()->cannot('update', $player)) {
+            return redirect()->route('players.show', $player)
                 ->withErrors('自分の記事以外は更新できません');
         }
 
         $imageFile = $request->file('image');
         if ($imageFile) {
-            $delete_image_path = 'images/cheers/' . $cheer->image;
-            $cheer->image = self::createFileName($imageFile);
+            $delete_image_path = 'images/players/' . $player->image;
+            $player->image = self::createFileName($imageFile);
         }
 
         $highlightFile = $request->file('highlight');
         if ($highlightFile) {
-            $delete_highlight_path = 'videos/cheers/' . $cheer->highlight;
-            $cheer->highlight = self::createFileName($highlightFile);
+            $delete_highlight_path = 'videos/players/' . $player->highlight;
+            $player->highlight = self::createFileName($highlightFile);
         }
 
 
-        $cheer->fill($request->all());
+        $player->fill($request->all());
 
         DB::beginTransaction();
         try {
-            $cheer->save();
+            $player->save();
 
             if ($imageFile) {
-                if (!Storage::putFileAs('images/cheers', $imageFile, $cheer->image)) {
+                if (!Storage::putFileAs('images/players', $imageFile, $player->image)) {
                     throw new \Exception('画像ファイルの保存に失敗しました。');
                 }
                 if (!Storage::delete($delete_image_path)) {
-                    Storage::delete('images/cheers/' . $cheer->image);
+                    Storage::delete('images/players/' . $player->image);
                     throw new \Exception('画像ファイルの削除に失敗しました。');
                 }
             }
 
             if ($highlightFile) {
-                if (!Storage::putFileAs('videos/cheers/', $highlightFile, $cheer->highlight)) {
+                if (!Storage::putFileAs('videos/players/', $highlightFile, $player->highlight)) {
                     throw new \Exception('動画ファイルの保存に失敗しました。');
                 }
                 if (!Storage::delete($delete_highlight_path)) {
-                    Storage::delete('videos/cheers/' . $cheer->highlight);
+                    Storage::delete('videos/players/' . $player->highlight);
                     throw new \Exception('動画ファイルの削除に失敗しました。');
                 }
             }
@@ -148,7 +148,7 @@ class CheerController extends Controller
             return back()->withInput()->withErrors($e->getMessage());
         }
 
-        return redirect()->route('cheers.show', $cheer)
+        return redirect()->route('players.show', $player)
             ->with('notice', 'Your profile has been updated');
     }
 
@@ -157,13 +157,13 @@ class CheerController extends Controller
      */
     public function destroy(string $id)
     {
-        $cheer = Cheer::find($id);
+        $player = Player::find($id);
 
         DB::beginTransaction();
         try {
-            $cheer->delete();
+            $player->delete();
 
-            if (!Storage::delete('images/cheers/' . $cheer->image)) {
+            if (!Storage::delete('images/players/' . $player->image)) {
                 throw new \Exception('画像ファイルの削除に失敗しました。');
             }
 
@@ -173,7 +173,7 @@ class CheerController extends Controller
             return back()->withErrors($e->getMessage());
         }
 
-        return redirect()->route('cheers.index')
+        return redirect()->route('players.index')
             ->with('notice', 'Your profile has deleted');
     }
 

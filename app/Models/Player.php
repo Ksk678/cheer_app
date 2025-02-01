@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
-class Cheer extends Model
+class Player extends Model
 {
     protected $fillable = [
         "first_name",
@@ -26,7 +26,7 @@ class Cheer extends Model
     }
 
     public function  getImageUrlAttribut()
-    
-        return Storage::url("images/cheers/" . $this->image);
+    {
+        return Storage::url("images/players/" . $this->image);
     }
 }
