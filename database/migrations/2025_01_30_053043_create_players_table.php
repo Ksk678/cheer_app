@@ -30,6 +30,10 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->timestamps();
         });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('role')->default('player'); // 'player' または 'club' など
+        });
     }
 
     /**

@@ -50,4 +50,19 @@ class User extends Authenticatable
     {
         return $this->hasMany(Player::class);
     }
+
+    public function isPlayer()
+    {
+        return $this->role === 'player';
+    }
+
+    public function isClub()
+    {
+        return $this->role === 'club';
+    }
+
+    protected $routeMiddleware = [
+        // ...
+        'role' => \App\Http\Middleware\RoleMiddleware::class,
+    ];
 }

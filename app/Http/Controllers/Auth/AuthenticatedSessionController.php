@@ -44,4 +44,21 @@ class AuthenticatedSessionController extends Controller
 
         return redirect('/');
     }
+
+    public function login(LoginRequest $request): RedirectResponse
+    {
+        $request->authenticate();
+
+        $user = $request->user();
+
+        if ($user->role === "player") {
+            return redirect()->route('players.show');
+        }
+
+        if ($user->role === "club") {
+            return redirect()->route('search');
+        }
+
+        return redirect()->route('home');
+    }
 }

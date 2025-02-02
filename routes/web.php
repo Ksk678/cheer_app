@@ -30,9 +30,8 @@ Route::resource('players', PlayerController::class)
 Route::resource('players', PlayerController::class)
     ->only(['show', 'index']);
 
-// Route::resource('players/top', TopController::class)
-//     ->only(['players', 'top']);
 
 Route::get('/search', [SearchController::class, 'index'])->name('search.index');
+
 
 require __DIR__ . '/auth.php';
