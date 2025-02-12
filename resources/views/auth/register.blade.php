@@ -6,8 +6,8 @@
         <div class="mt-4">
             <x-input-label for="role" :value="__('Role')" />
             <select id="role" name="role" class="block mt-1 w-full" required>
-                <option value="player">Player</option>
-                <option value="club">Club</option>
+                <option value="0">Player</option>
+                <option value="1">Club</option>
             </select>
             <x-input-error :messages="$errors->get('role')" class="mt-2" />
         </div>

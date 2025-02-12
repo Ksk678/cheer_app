@@ -31,7 +31,7 @@ class StorePlayerRequest extends FormRequest
             // "weight" = "required|string|max:20",
             // "nationality" = "required|string|max:20",
             // "passport" = "required|string|max:20",
-            // "highlight" = "required|string|max:20",
+            // "highlight" = "required|string|max:30",
             // "image" = "required|string|max:20",
         ];
     }

@@ -182,4 +182,11 @@ class PlayerController extends Controller
     {
         return date('YmdHis') . '_' . $file->getClientOriginalName();
     }
+
+
+    public function dashboard()
+    {
+        return view("dashboard");
+    }
+    
 }

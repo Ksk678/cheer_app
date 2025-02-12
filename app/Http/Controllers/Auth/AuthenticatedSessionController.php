@@ -28,6 +28,15 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        $user = $request->user();
+
+        if ($user->role == 0) {
+            return redirect()->route('players.show', $user->player->id);
+        }
+
+        if ($user->role == 1) {
+            return redirect()->route('search.index');
+        }
         return redirect()->intended(route('root', absolute: false));
     }
 
@@ -51,11 +60,11 @@ class AuthenticatedSessionController extends Controller
 
         $user = $request->user();
 
-        if ($user->role === "player") {
+        if ($user->role == 0) {
             return redirect()->route('players.show');
         }
 
-        if ($user->role === "club") {
+        if ($user->role == 1) {
             return redirect()->route('search');
         }
 
