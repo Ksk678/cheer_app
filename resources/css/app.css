@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.btn-lg {
+    padding: 12px 30px;
+    font-size: 18px;
+}
+
+.container {
+    height: 100vh;
+    /* ページ全体の高さを100vhに */
+}

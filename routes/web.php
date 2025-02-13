@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\MainController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\ProfileController;
@@ -27,3 +28,6 @@ Route::resource('players', PlayerController::class)
 Route::get('/search', [SearchController::class, 'index'])->name('search.index');
 
 require __DIR__ . '/auth.php';
+
+
+route::get("/home", [MainController::class, "home"])->name("home");

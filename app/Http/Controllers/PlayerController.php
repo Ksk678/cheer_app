@@ -7,6 +7,7 @@ use App\Http\Requests\UpdatePlayerRequest;
 use App\Models\Player;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Routing\Controller;
 
 class PlayerController extends Controller
 {
@@ -182,11 +183,4 @@ class PlayerController extends Controller
     {
         return date('YmdHis') . '_' . $file->getClientOriginalName();
     }
-
-
-    public function dashboard()
-    {
-        return view("dashboard");
-    }
-    
 }
